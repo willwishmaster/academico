@@ -36,8 +36,7 @@ require_once("conexion.php");
 
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -397,22 +396,23 @@ require_once("conexion.php");
                     <td class="center"><?php echo $row['fechaNacimiento'];?></td>       
                     <td>
                         <div class="tooltip-demo">
-                            <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="ace-icon fa fa-pencil bigger-120"></i></button> 
-                            <button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Ver Cursos"> <i class="ace-icon fa fa-columns bigger-120"></i></button>           
-                            <button type="button" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="bottom" title="Asistencias"><i class="ace-icon fa fa-check bigger-120"></i></button>         
+                            <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="ace-icon fa fa-pencil bigger-120"></i></button>
+                            <button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Ver Cursos"> <i class="ace-icon fa fa-columns bigger-120"></i></button>
+                            <button type="button" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="bottom" title="Asistencias"><i class="ace-icon fa fa-check bigger-120"></i></button>
                         </div>       
                     </td>     
                     </tr>     
-                    <?php $i++;   
-
-                } 
+                    <?php $i++;
+                }
              } 
              
     ?>
+        </tbody> 
+        </table>
 
-        
         <!-- /#page-wrapper -->
 		<div class="modal fade" id="modalEstudiante" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+          <form method="post" id="insert_form">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header bg-primary">
@@ -426,7 +426,6 @@ require_once("conexion.php");
 								<label for="tipoDoc" class="col-sm-5 control-label">Tipo Documento</label>
 								<div class="col-sm-7">
 									<select id="tipoDoc" name="tipoDoc" class="form-control">
-										<option value="">- Seleccione -</option>
 										<option value="01">DNI</option>
 										<option value="02">Partida de Nacimiento</option>
 									</select>
@@ -437,20 +436,28 @@ require_once("conexion.php");
 								<div class="col-sm-7">
 									<input id="nroDoc" name="nroDoc" class="form-control" onfocus="this.select()">
 								</div>
-							</div>
-							<div class="form-group col-md-6">
-								<label for="nombres" class="col-sm-5 control-label">Nombres</label>
-								<div class="col-sm-7">
-									<input id="nombres" name="nombres" class="form-control">
-								</div>
-							</div>
-							<div class="form-group col-md-6">
-								<label for="apellidos" class="col-sm-5 control-label">Apellidos</label>
-								<div class="col-sm-7">
-									<input id="apellidos" name="apellidos" class="form-control" >
-								</div>
-							</div>
+							</div>                            
 						</div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="nombres" class="col-sm-4 control-label">Nombres</label>
+                                <div class="col-sm-12">
+                                    <input id="nombres" name="nombres" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="paterno" class="col-sm-4 control-label">Paterno</label>
+                                <div class="col-sm-12">
+                                    <input id="paterno" name="paterno" class="form-control" >
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="materno" class="col-sm-4 control-label">Materno</label>
+                                <div class="col-sm-12">
+                                    <input id="materno" name="materno" class="form-control" >
+                                </div>
+                            </div>
+                            </div>
 						<div class="row">	
 							<div class="form-group col-md-6">
 								<label for="direccion" class="col-sm-5 control-label">Dirección</label>
@@ -469,25 +476,19 @@ require_once("conexion.php");
 							<div class="form-group col-md-6">
 								<label for="genero" class="col-sm-5 control-label">Género</label>
 								<div class="col-sm-7">
-									<div class="radio">
-										<label>
-											<input id="generoM" name="genero" type="radio" />
-											<span class="lbl"> Masculino</span>
-										</label>
-										<label>
-											<input id="generoF" name="genero" type="radio" />
-											<span class="lbl"> Femenino</span>
-										</label>
-    									</div>
-    								</div>
+                                    <select id="genero" name="genero" class="form-control">                                        
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                    </select>									
     							</div>
-							<div class="form-group col-md-6">
-								<label for="email" class="col-sm-5 control-label">Correo Electrónico</label>
-								<div class="col-sm-7">
-									<input id="email" name="email" class="form-control" >
-								</div>
-							</div>
-						</div>
+                                </div>
+    							<div class="form-group col-md-6">
+    								<label for="email" class="col-sm-5 control-label">Correo Electrónico</label>
+    								<div class="col-sm-7">
+    									<input id="email" name="email" class="form-control" >
+    								</div>
+    							</div>    						
+                        </div>
 						<div class="row">	
 							<div class="form-group col-md-6">
 								<label for="telefono" class="col-sm-5 control-label">Teléfono</label>
@@ -498,30 +499,21 @@ require_once("conexion.php");
 							<div class="form-group col-md-6">
                                 <label for="telefono" class="col-sm-5 control-label">Fecha de Nacimiento</label>
                                 <div class="col-md-6">
-                                    <!-- <div class="input-group date" data-provide="datepicker">
-                                        <input type="text" class="form-control">
-                                        <div class="input-group-addon">
-                                            <span class="glyphicon glyphicon-th"></span>
-                                        </div>
-                                    </div> -->
-                                   <form>
                                       <div class="input-group date datepicker">
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" id="fechaNacimiento" name="fechaNacimiento">
                                             <div class="input-group-addon">
                                                 <span class="glyphicon glyphicon-th"></span>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </div>                                    
                                 </div>
       
                                 </div>
                             </div>
-						</div>
+						
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" class="guardarmodal">Guardar<i class="fa fa-save"></i></button>
-
-                     
+						<!--<button type="button" class="btn btn-primary" class="guardarmodal">Guardar<i class="fa fa-save"></i></button>-->
+                        <input type="submit" name="insert" id="insert" value="Registrar" class="btn btn-success" />
 						<button type="button" class="btn btn-warning" data-dismiss="modal">
 							<i class="ace-icon fa fa-times"></i>
 							Cancelar
@@ -531,7 +523,8 @@ require_once("conexion.php");
 				<!-- /.modal-content -->
 			</div>
 			<!-- /.modal-dialog -->
-		</div>
+		</form>
+        </div>
 		<div class="modal fade" id="modalListaEstudiantes" tabindex="-1" role="dialog" aria-labelledby="modalTitleLista" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -580,17 +573,35 @@ require_once("conexion.php");
     <script>
         //funcoion para que salga cuadro de fecha
   
-     $(document).ready(function() {
-
-        // $('.calendario').datepicker({
-        //   pickTime: false,
-        //   autoclose: true,
-        //   language: 'es'
-        // });
-        //         
-        $('.datepicker').datepicker({
+     $(document).ready(function() {        
+        $('#fechaNacimiento').datepicker({
           format: 'dd-mm-yyyy'
         });
+
+        $('#insert_form').on("submit", function(event){
+          event.preventDefault();
+          if($('#nombres').val() == "")  
+          {  
+           alert("Name is required");  
+          }
+          else
+          {  
+           $.ajax({  
+            url:"insert.php",
+            method:"POST",  
+            data:$('#insert_form').serialize(),  
+            beforeSend:function(){  
+             $('#insert').val("Inserting");
+            },  
+            success:function(data){
+            console.log(data);                
+             $('#insert_form')[0].reset();  
+             $('#modalEstudiante').modal('hide');
+             $('#dataTables-estudiantes').html(data);
+            }
+           });
+          }
+         });
       });
     $(document).ready(function() {
         $('#dataTables-estudiantes').DataTable({
@@ -637,12 +648,8 @@ require_once("conexion.php");
 			});
 			$("#lista").html(str);
 		});
-	}
-    </script>
-     <script>
-        //$('.datepicker').datepicker(); 
-        //$(document).on('.datepicker.data-api');
-    </script>
+	}    
+    </script>     
 </body>
 
 </html>
