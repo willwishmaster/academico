@@ -35,9 +35,9 @@
         return $conn->query($sql);
     }
 
-    function Eliminar($tabla, $where, $limit='LIMIT 1')
+    function Eliminar($tabla, $id, $limit='LIMIT 1')
     {   
-        return $conn->query("DELETE FROM {$tabla} WHERE $where $limit");
+        return $conn->query("DELETE FROM {$tabla} WHERE id=$id $limit");
     }
 
     function enumSelect($table, $field, $sel = -1, $reemplazo = array())
@@ -54,6 +54,23 @@
 			$html .= '<option value="' . $value . '" '.(($value == $sel) ? 'selected' : '').' >' . htmlentities( (empty($reemplazo) ? $value : $reemplazo[$value]) ) . '</option>';
 		}
 		return $html;
+	}
+
+	function add_dash_mysql($fecha) {
+		if (empty($fecha))
+			return '0000-00-00';
+		preg_match("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2,4})/", $fecha, $mifecha);
+		$lafecha = $mifecha[3] . "-" . $mifecha[2] . "-" . $mifecha[1];
+		return $lafecha;
+	}
+
+	function add_slash_mysql($fecha) {
+		$compuesto = explode(" ", $fecha);
+		$fecha = $compuesto[0];
+		$hora = $compuesto[1];
+		preg_match("/([0-9]{2,4})\-([0-9]{1,2})\-([0-9]{1,2})/", $fecha, $mifecha);
+		$lafecha = $mifecha[3] . "/" . $mifecha[2] . "/" . $mifecha[1];
+		return $lafecha . " " . $hora;
 	}
 
  ?>

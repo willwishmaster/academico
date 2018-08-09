@@ -342,27 +342,24 @@ require_once("conexion.php");
                                 data-target="#modalEstudiante">
 									<i class="fa fa-file-o"></i>
 									Nuevo
-								</button>  
-								<button type="button" class="btn btn-danger"
-                               		<i class="fa fa-trash"></i>
-									Borrar
-								</button>
-								
+								</button>                                
+                                <button type="button" data-dismiss="modal" class="btn btn-primary btn-danger" id="delete" name="delete">Eliminar</button>
 								<button type="button" class="btn btn-success" 
-								data-toggle="modal" 
-								data-target="#modalListaEstudiantes" 
-								onclick="recorrerLista()">
+    								data-toggle="modal" 
+    								data-target="#modalListaEstudiantes" 
+    								onclick="recorrerLista()">
 									<i class="fa fa-external-link"></i>
 									Mostrar Lista
 								</button>
 								<br/><br/>
 							</div>
+                            
+                            <form action="estudiantes.php" method="post" id="form_del_stu" target="_self">
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-estudiantes">
                                 <thead>
                                     <tr>
 										<th class="center">
-											<input type="checkbox"  
-												onClick="seleccionarTodo(this)"/>
+											<input type="checkbox" onClick="seleccionarTodo(this)"/>
 										</th>
                                         <th width="10">Nro.</th>
 										<th>DNI</th>
@@ -382,11 +379,10 @@ require_once("conexion.php");
               $resultado = $conn->query($consulta);
               if($resultado->num_rows > 0) {
                   $i = 1;   
-                while($row = $resultado->fetch_assoc()) 
-                
+                while($row = $resultado->fetch_assoc())
                     {     ?>     
                     <tr class="">   
-                    <td class="center"> <input type="checkbox" name="fila"/>       </td>       
+                    <td class="center"> <input type="checkbox" name="id_student" value=<?=$row['id']?>/></td>
                     <td class="center"> <?php echo $i; ?> </td>
                     <td><?php echo $row['DNI'];?></td>
                     <td><?php echo mb_convert_encoding($row['paterno'].' '.$row['materno'].' '.$row['nombres'], 'UTF-8', 'ISO-8859-1');?></td>
@@ -409,6 +405,7 @@ require_once("conexion.php");
     ?>
         </tbody> 
         </table>
+        </form>
 
         <!-- /#page-wrapper -->
 		<div class="modal fade" id="modalEstudiante" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
@@ -548,7 +545,11 @@ require_once("conexion.php");
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
+    <!-- <script src="../vendor/jquery/jquery.min.js"></script>-->
+    <script src="../lib/jquery-3.3.1.min.js"></script>
+
+    <!-- popper -->
+    <!-- <script src="../lib/popper.min.js"></script> -->
 
     <!--<script src="lib/jquery-3.3.1.min.js"></script>-->
 
@@ -569,13 +570,18 @@ require_once("conexion.php");
     <!-- Bootstrap-datepicker -->
     <script src="../lib/js/bootstrap-datepicker.min.js"></script>
 
+    <!-- bootstrap-confirmation -->
+    <!--<script src="../lib/bootstrap-confirmation.min.js"></script> -->
+
+    <script src="../lib/bootbox.min.js"></script>
+
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
         //funcoion para que salga cuadro de fecha
   
      $(document).ready(function() {        
         $('#fechaNacimiento').datepicker({
-          format: 'dd-mm-yyyy'
+          format: 'dd/mm/yyyy'
         });
 
         $('#insert_form').on("submit", function(event){
@@ -602,6 +608,31 @@ require_once("conexion.php");
            });
           }
          });
+
+         $('#delete').click(function() {
+            bootbox.confirm("Estas seguro que quieres eliminarlo?", function(result) {
+                if(result){
+                    //Eliminar('estudiant', $where, $limit='LIMIT 1')
+                        alert($_POST['id_student']);
+                        $.ajax({  
+                            url:"estudiantes.php",
+                            method:"POST",  
+                            data:$('#form_del_stu').serialize(),  
+                            beforeSend:function(){  
+                             $('#insert').val("Inserting");
+                            },  
+                            success:function(data){
+                             $('#insert_form')[0].reset();
+                             $('#modalEstudiante').modal('hide');
+                             $('#dataTables-estudiantes').html(data);
+                            }
+                           });
+                }
+                else{
+                    alert("Confirm result: " + result);
+                }              
+            });
+          });
       });
     $(document).ready(function() {
         $('#dataTables-estudiantes').DataTable({
@@ -649,6 +680,18 @@ require_once("conexion.php");
 			$("#lista").html(str);
 		});
 	}    
+
+    $('button[name="remove_levels"]').on('click', function(e) {
+      var $form = $(this).closest('form');
+      e.preventDefault();
+      $('#confirm').modal({
+          backdrop: 'static',
+          keyboard: false
+        })
+        .one('click', '#delete', function(e) {
+          $form.trigger('submit');
+        });
+    });
     </script>     
 </body>
 

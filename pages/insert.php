@@ -1,6 +1,6 @@
 <?php
 
-$conn = mysqli_connect("localhost", "root", "", "academico");
+include('conexion.php');
 
 if(!empty($_POST))
 {
@@ -12,17 +12,18 @@ if(!empty($_POST))
     $direccion = mysqli_real_escape_string($conn, $_POST["direccion"]);
     $genero = mysqli_real_escape_string($conn, $_POST["genero"]);      
     $telefono = mysqli_real_escape_string($conn, $_POST["telefono"]);
-    $email = mysqli_real_escape_string($conn, $_POST["email"]);  
-    $fechaNacimiento = $_POST["fechaNacimiento"];    
-    $fechaNacimientos = date('d-m-Y',strtotime($fechaNacimiento));  
+    $email = mysqli_real_escape_string($conn, $_POST["email"]);
+    $fechaNacimiento = mysqli_real_escape_string($conn, $_POST["fechaNacimiento"]);    
+    $fechaNacimiento = add_dash_mysql($fechaNacimiento); 
+    
     $query = " INSERT INTO estudiant (DNI,paterno,materno,nombres,genero,email,telefono,fechaNacimiento)
-     VALUES('$DNI','$paterno','$materno','$nombres','$genero','$email','$telefono','$fechaNacimientos')";
-//    var_dump($query);
+               VALUES('$DNI','$paterno','$materno','$nombres','$genero','$email','$telefono','$fechaNacimiento')";
+
     if(mysqli_query($conn, $query))
     {
-     $output.= '<label class="text-success">Registro Insertado Correctamente</label>';
+     $output.= '<label class="text-success">Registro Insertado Correctamente</label>';    
      
-     $select_query = "Select e.* FROM estudiant e ORDER BY e.paterno ASC";
+     $select_query ='Select e.*, ( Case e.genero When "M" Then "Masculino" Else "Femenino" End) As genero_desc FROM `estudiant` e ORDER BY e.`paterno` ASC';
      
      $result = $conn->query($select_query);
      $output.="
@@ -52,7 +53,7 @@ if(!empty($_POST))
           <td class='center'>".$i."</td>
           <td>".$row["DNI"]."</td>
           <td>".mb_convert_encoding($row["paterno"]." ".$row["materno"]." ".$row["nombres"], "UTF-8", "ISO-8859-1")."</td>
-          <td>".$row["genero"]."</td> 
+          <td>".$row["genero_desc"]."</td> 
           <td class='center'>".$row["email"]."</td>
           <td class='center'>".$row["telefono"]."        </td>       
           <td class='center'>".$row["fechaNacimiento"]."</td>       
